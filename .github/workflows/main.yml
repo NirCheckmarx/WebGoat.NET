@@ -21,8 +21,7 @@ jobs:
           cx_tenant: ${{ secrets.CX_TENANT }}
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
-          #scan_types: sast,kics,sca
-          additional_params: --report-format sarif --output-name results
+          additional_params: --scan_types sast,kics,sca --report-format sarif --output-name results
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
