@@ -11,14 +11,14 @@ jobs:
     steps:
       - name: Checkout
       - uses: actions/checkout@v2
-      - id: get-branch
-        run: |
-          branch=$(echo ${{ github.ref }} | cut -d/ -f3)
-          echo "::set-output name=branch::$branch"
+      #- id: get-branch
+      #  run: |
+      #    branch=$(echo ${{ github.ref }} | cut -d/ -f3)
+      #   echo "::set-output name=branch::$branch"
       - name: CxAST CLI Action
       - uses: checkmarxDev/ast-github-action@master #Github Action version
         with:
-          project_name: Github-WebGoat.NET-${{ steps.get-branch.outputs.branch }}
+          project_name: Github-WebGoat.NET-master #${{ steps.get-branch.outputs.branch }}
           base_uri: ${{ secrets.CX_URL }}
           cx_tenant: ${{ secrets.CX_TENANT }}
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
