@@ -15,7 +15,7 @@ jobs:
         run: |
           branch=$(echo ${{ github.ref }} | cut -d/ -f3)
           echo "::set-output name=branch::$branch"
-      - name: Checkmarx AST CLI Action
+      - name: CxAST CLI Action
       - uses: checkmarxDev/ast-github-action@master #Github Action version
         with:
           project_name: Github-WebGoat.NET-${{ steps.get-branch.outputs.branch }}
