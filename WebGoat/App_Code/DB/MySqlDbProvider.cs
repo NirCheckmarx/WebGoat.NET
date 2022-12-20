@@ -281,7 +281,7 @@ namespace OWASP.WebGoat.NET.App_Code.DB
                 {
                     connection.Open();
                     MySqlCommand command = new MySqlCommand(sql, connection);
-                    command.Parameters.AddWithValue("@productCode",roductCode);
+                    command.Parameters.AddWithValue("@productCode",productCode);
                     command.Parameters.AddWithValue("@email",email);
                     command.Parameters.AddWithValue("@comment",comment);
                 
