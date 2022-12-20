@@ -294,7 +294,12 @@ namespace OWASP.WebGoat.NET.App_Code.DB
 
         public string UpdateCustomerPassword(int customerNumber, string password)
         {
-            string sql = "update CustomerLogin set password = '" + Encoder.Encode(password) + "' where customerNumber = " + customerNumber;
+            
+            
+            
+            //string sql = "update CustomerLogin set password = '" + Encoder.Encode(password) + "' where customerNumber = " + customerNumber;
+
+            string sql = "update CustomerLogin set password = '" + Encoder.Encode(@password) + "' where customerNumber = " + @customerNumber;
             string output = null;
             try
             {
@@ -302,6 +307,8 @@ namespace OWASP.WebGoat.NET.App_Code.DB
                 using (MySqlConnection connection = new MySqlConnection(_connectionString))
                 {
                     MySqlCommand command = new MySqlCommand(sql, connection);
+                    command.Parameters.AddWithValue("@password", password);
+                    command.Parameters.AddWithValue("@customerNumber",customerNumber);
                 
                     int rows_added = command.ExecuteNonQuery();
                     
