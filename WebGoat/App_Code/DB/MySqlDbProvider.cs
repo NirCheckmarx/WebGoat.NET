@@ -294,9 +294,6 @@ namespace OWASP.WebGoat.NET.App_Code.DB
 
         public string UpdateCustomerPassword(int customerNumber, string password)
         {
-            
-            
-            
             var encodedPassword = Encode.Encode(password);
 
             string sql = "update CustomerLogin set password = '" + @encodedPassword + "' where customerNumber = " + @customerNumber;
