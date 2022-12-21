@@ -33,11 +33,15 @@ namespace OWASP.WebGoat.NET
             string safeExpr = "//salesperson[state=$state]/text()";
             XPathExpression xpath = XPathExpression.Compile(safeExpr);
 
-            // Define variables and resolver
-            //   Implement CustomContext as a subclass of XsltContext
-            CustomContext ctxParameters = new CustomContext(); 
-            ctxParameters.AddVariable("state", state);		
-            xpath.SetContext(ctxParameters);
+            // Arguments are provided as a XsltArgumentList()
+            XsltArgumentList varList = new XsltArgumentList();
+            varList.AddParam("state", string.Empty, state);
+
+            // CustomContext is an application specific class, that looks up variables in the
+            // expression from the varList.
+            CustomContext context = new CustomContext(new NameTable(), varList);
+            xpath.SetContext(context);
+            
             XmlNodeList list = xDoc.SelectNodes(safeExpr);
 
             if (list.Count > 0)
