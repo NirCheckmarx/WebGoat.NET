@@ -9,6 +9,13 @@ using System.Xml.XPath;
 
 namespace OWASP.WebGoat.NET
 {
+
+    public class CustomContext : XsltContext
+    {
+        public CustomContext()
+        {}
+
+    }
     public partial class XPathInjection : System.Web.UI.Page
     {
         // Make into actual lesson
@@ -33,14 +40,11 @@ namespace OWASP.WebGoat.NET
             string safeExpr = "//salesperson[state=$state]/text()";
             XPathExpression xpath = XPathExpression.Compile(safeExpr);
 
-            // Arguments are provided as a XsltArgumentList()
-            XsltArgumentList varList = new XsltArgumentList();
-            varList.AddParam("state", string.Empty, state);
-
-            // CustomContext is an application specific class, that looks up variables in the
-            // expression from the varList.
-            CustomContext context = new CustomContext(new NameTable(), varList);
-            xpath.SetContext(context);
+            // Define variables and resolver
+		    //Implement CustomContext as a subclass of XsltContext
+		    CustomContext ctxParameters = new CustomContext(); 
+		    ctxParameters.AddVariable("state", state);		
+		    xpath.SetContext(ctxParameters);
             
             XmlNodeList list = xDoc.SelectNodes(safeExpr);
 
