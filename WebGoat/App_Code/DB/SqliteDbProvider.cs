@@ -32,9 +32,15 @@ namespace OWASP.WebGoat.NET.App_Code.DB
 
         public bool TestConnection()
         {   
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+                builder["Data Source"] = "(local)";
+                builder["integrated Security"] = true;
+                /*add other params / sanitize where needed:
+                builder["other-connection-strings-params]=value;
+                */
             try
             {
-                using (SqliteConnection conn = new SqliteConnection(_connectionString))
+                using (SqliteConnection conn = new SqliteConnection(builder.ConnectionString))
                 {
                     conn.Open();
                     
