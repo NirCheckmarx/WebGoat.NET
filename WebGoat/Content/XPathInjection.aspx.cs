@@ -25,9 +25,9 @@ namespace OWASP.WebGoat.NET
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(xml);
-            XmlNodeList list = xDoc.SelectNodes("//salesperson[state='" + state + "']");
+            // XmlNodeList list = xDoc.SelectNodes("//salesperson[state='" + state + "']");
             
-            /*string expr = "//salesperson[state='" + state + "']";
+            // string expr = "//salesperson[state='" + state + "']";
             //XmlNodeList list = xDoc.SelectNodes(expr);
 
             string safeExpr = "//salesperson[state=$state]/text()";
@@ -39,7 +39,7 @@ namespace OWASP.WebGoat.NET
 		    ctxParameters.AddVariable("state", state);		
 		    xpath.SetContext(ctxParameters);
             
-            XmlNodeList list = xDoc.SelectNodes(safeExpr);*/
+            XmlNodeList list = xDoc.SelectNodes(safeExpr);
 
             if (list.Count > 0)
             {
