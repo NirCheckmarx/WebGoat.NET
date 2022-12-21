@@ -9,13 +9,6 @@ using System.Xml.XPath;
 
 namespace OWASP.WebGoat.NET
 {
-
-    public class CustomContext : XsltContext
-    {
-        public CustomContext()
-        {}
-
-    }
     public partial class XPathInjection : System.Web.UI.Page
     {
         // Make into actual lesson
