@@ -6,7 +6,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.XPath;
-using System.Xml.Xsl;
 
 namespace OWASP.WebGoat.NET
 {
