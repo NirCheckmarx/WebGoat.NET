@@ -25,21 +25,8 @@ namespace OWASP.WebGoat.NET
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(xml);
-            XmlNodeList list = xDoc.SelectNodes("//salesperson[state='" + state + "']");
-            
-            /*string expr = "//salesperson[state='" + state + "']";
-            //XmlNodeList list = xDoc.SelectNodes(expr);
-
-            string safeExpr = "//salesperson[state=$state]/text()";
-            XPathExpression xpath = XPathExpression.Compile(safeExpr);
-
-            // Define variables and resolver
-		    //Implement CustomContext as a subclass of XsltContext
-		    CustomContext ctxParameters = new CustomContext(); 
-		    ctxParameters.AddVariable("state", state);		
-		    xpath.SetContext(ctxParameters);
-            
-            XmlNodeList list = xDoc.SelectNodes(safeExpr);*/
+            string sanitizedState = SanitizeState(state);
+            XmlNodeList list = xDoc.SelectNodes("//salesperson[state='" + sanitizedState + "']");
 
             if (list.Count > 0)
             {
@@ -47,6 +34,25 @@ namespace OWASP.WebGoat.NET
             }
 
         }
+        private string SanitizeState(string inputState)
+        {
+            switch (inputState)
+            {
+                case "or":
+                return "or";
+                
+                case "ca":
+                return "ca";
+
+                case "ny":
+                return "ny";
+
+                case "tx":
+                return "tx";
+            }
+            return null;
+        }
     }
+
 }
 
