@@ -31,6 +31,8 @@ namespace OWASP.WebGoat.NET
             //XmlNodeList list = xDoc.SelectNodes(expr);
 
             string safeExpr = "//salesperson[state=$state]/text()";
+            XPathExpression xpath = XPathExpression.Compile(safeExpr);
+
             // Define variables and resolver
             //   Implement CustomContext as a subclass of XsltContext
             CustomContext ctxParameters = new CustomContext(); 
