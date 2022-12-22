@@ -13,10 +13,15 @@ namespace OWASP.WebGoat.NET.App_Code
         
         public static int RunProcessWithInput(string cmd, string args, string input)
         {
+            string sanitizedCmd = SanitizeInput(cmd, "cmd");
+            string sanitizedCmd = SanitizeInput(args, "args");
+            string sanitizedCmd = SanitizeInput(input, "input");
+
+
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 WorkingDirectory = Settings.RootDir,
-                FileName = cmd,
+                FileName = sanitizedCmd,
                 Arguments = args,
                 UseShellExecute = false,
                 RedirectStandardInput = true,
@@ -86,6 +91,42 @@ namespace OWASP.WebGoat.NET.App_Code
                 {
                     process.Kill();
                     return 1;
+                }
+            }
+        }
+        private string SanitizeInput(string input, string inputType)
+        {
+            switch (inputType)
+            {
+                case "cmd":
+                switch (input)
+                {
+                    case "ls":
+                    return "ls";
+                    case "mkdir":
+                    return "mkdir";
+                    
+                    return null;
+                }
+                case "args":
+                switch (input)
+                {
+                    case "-l":
+                    return "-l";
+                    case "-p":
+                    return "-p";
+                    
+                    return null;
+                }
+                 case "input":
+                switch (input)
+                {
+                    case "/tmp/file1.txt":
+                    return "/tmp/file1.txt";
+                    case "/tmp/file2.txt":
+                    return "/tmp/file2.txt";
+                    
+                    return null;
                 }
             }
         }
