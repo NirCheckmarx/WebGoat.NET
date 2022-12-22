@@ -96,40 +96,47 @@ namespace OWASP.WebGoat.NET.App_Code
         }
         private static string SanitizeInput(string input, string inputType)
         {
-            switch (inputType)
-            {
-                case "cmd":
-                switch (input)
+                if (inputType == "cmd")
                 {
-                    case "ls":
-                    return "ls";
-                    case "mkdir":
-                    return "mkdir";
                     
-                    return null;
+                    switch (input)
+                    {
+                        case "ls":
+                        return "ls";
+                        case "mkdir":
+                        return "mkdir";
+                        
+                        return null;
+                    }
                 }
-                case "args":
-                switch (input)
+                else if (inputType =="args")
                 {
-                    case "-l":
-                    return "-l";
-                    case "-p":
-                    return "-p";
-                    
-                    return null;
+                    switch (input)
+                    {
+                        case "-l":
+                        return "-l";
+                        case "-p":
+                        return "-p";
+                        
+                        return null;
+                    }
+
                 }
-                 case "input":
-                switch (input)
+                else if(inputType == "input")
                 {
-                    case "/tmp/file1.txt":
-                    return "/tmp/file1.txt";
-                    case "/tmp/file2.txt":
-                    return "/tmp/file2.txt";
-                    
-                    return null;
+                    switch (input)
+                    {
+                        case "/tmp/file1.txt":
+                        return "/tmp/file1.txt";
+                        case "/tmp/file2.txt":
+                        return "/tmp/file2.txt";
+                        
+                        return null;
+                    }
+
                 }
-            }
+                return null; 
+            }   
         }
     }
-}
 
