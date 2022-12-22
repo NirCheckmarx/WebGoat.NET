@@ -14,15 +14,15 @@ namespace OWASP.WebGoat.NET.App_Code
         public static int RunProcessWithInput(string cmd, string args, string input)
         {
             string sanitizedCmd = SanitizeInput(cmd, "cmd");
-            string sanitizedCmd = SanitizeInput(args, "args");
-            string sanitizedCmd = SanitizeInput(input, "input");
+            string sanitizedArgs = SanitizeInput(args, "args");
+            string sanitizedInput = SanitizeInput(input, "input");
 
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 WorkingDirectory = Settings.RootDir,
                 FileName = sanitizedCmd,
-                Arguments = args,
+                Arguments = sanitizedArgs,
                 UseShellExecute = false,
                 RedirectStandardInput = true,
                 RedirectStandardError = true,
@@ -57,7 +57,7 @@ namespace OWASP.WebGoat.NET.App_Code
 
                 process.Start();
 
-                using (StreamReader reader = new StreamReader(new FileStream(input, FileMode.Open)))
+                using (StreamReader reader = new StreamReader(new FileStream(sanitizedInput, FileMode.Open)))
                 {
                     string line;
                     string replaced;
@@ -94,7 +94,7 @@ namespace OWASP.WebGoat.NET.App_Code
                 }
             }
         }
-        private string SanitizeInput(string input, string inputType)
+        private static string SanitizeInput(string input, string inputType)
         {
             switch (inputType)
             {
