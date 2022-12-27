@@ -30,7 +30,8 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             if (json != null && json.Length > 0)
             {
                 context.Response.ContentType = "text/plain";
-                context.Response.Write(json);
+                string safeJson = SanitizeJson(json);
+                context.Response.Write(safeJson);
             }
             else
             {
@@ -46,6 +47,22 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             {
                 return false;
             }
+        }
+        private static string SanitizeJson(string UnsafeJsonString)
+        {
+            const string tagWhiteSpace = @"(>|$)(\W|\n|\r)+<";
+            const string stripFormatting = @"<[^>]*(>|$)";
+            const string lineBreak = @"<(br|BR)\s{0,1}\/{0,1}>";
+            var lineBreakRegex = new Regex(lineBreak, RegexOptions.Multiline);
+            var stripFormattingRegex = new Regex(stripFormatting, RegexOptions.Multiline);
+            var tagWhiteSpaceRegex = new Regex(tagWhiteSpace, RegexOptions.Multiline);
+            var safeJsonString = UnsafeJsonString;
+            safeJsonString = System.Net.WebUtility.HtmlDecode(safeJsonString);
+            safeJsonString = tagWhiteSpaceRegex.Replace(safeJsonString, "><");
+            safeJsonString = lineBreakRegex.Replace(safeJsonString, Environment.NewLine);
+            safeJsonString = stripFormattingRegex.Replace(safeJsonString, string.Empty);
+            return safeJsonString;
+
         }
     }
 }
