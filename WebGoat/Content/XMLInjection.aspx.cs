@@ -8,6 +8,7 @@ using System.Xml.XPath;
 using System.Data;
 using System.IO;
 using System.Text;
+using System.Security;
 
 namespace OWASP.WebGoat.NET
 {
@@ -65,8 +66,9 @@ namespace OWASP.WebGoat.NET
             foreach (XmlUser user in users)
             {
                 xml += "<user>" + Environment.NewLine;
-                xml += "<name>" + user.Name + "</name>" + Environment.NewLine;
-                xml += "<email>" + user.Email + "</email>" + Environment.NewLine;
+                xml += "<name>" + SecurityElement.Escape(user.Name) + "</name>" + Environment.NewLine;
+                xml += "<email>" + SecurityElement.Escape(user.Email) + "</email>" + Environment.NewLine;
+
                 xml += "</user>" + Environment.NewLine;
             }
             xml += "</users>" +Environment.NewLine;
