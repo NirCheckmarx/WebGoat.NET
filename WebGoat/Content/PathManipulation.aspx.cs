@@ -40,7 +40,7 @@ namespace OWASP.WebGoat.NET
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        lblStatus.Text = "File not found: " + filename;   
+                        lblStatus.Text = "File not found: " + HttpUtility.HtmlEncode(filename);   
                     }
                 }
         	//}

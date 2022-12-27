@@ -30,7 +30,8 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             if (json != null && json.Length > 0)
             {
                 context.Response.ContentType = "text/plain";
-                context.Response.Write(json);
+                string safeJson = SanitizeJson(json);
+                context.Response.Write(safeJson);
             }
             else
             {
@@ -46,6 +47,13 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             {
                 return false;
             }
+        }
+        private static string SanitizeJson(string UnsafeJsonString)
+        {
+           
+            var safeJsonString = HttpUtility.HtmlEncode(UnsafeJsonString);
+            return safeJsonString;
+
         }
     }
 }
