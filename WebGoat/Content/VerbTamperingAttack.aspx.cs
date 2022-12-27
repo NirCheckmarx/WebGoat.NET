@@ -11,7 +11,7 @@ namespace OWASP.WebGoat.NET
         {
             if (Request.QueryString["message"] != null)
             {
-                VerbTampering.tamperedMessage = Request.QueryString["message"];
+                VerbTampering.tamperedMessage = HttpUtility.HtmlEncode(Request.QueryString["message"]);
             }
         } 
     }
