@@ -10,6 +10,8 @@ using System.Data.SqlClient;
 using System.Security;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
     public class SqliteDbProvider : IDbProvider
@@ -116,8 +118,24 @@ namespace OWASP.WebGoat.NET.App_Code.DB
 
         private static string ConvertToString(SecureString securePassword)
         {
-            string pwdStr = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
-            return pwdStr;
+            //string pwdStr = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
+            //return pwdStr;
+            Func<SecureString, string> SecureToString = secureString =>
+            {
+                IntPtr valuePtr = IntPtr.Zero;
+                try
+                {
+                    valuePtr = System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocUnicode(secureString);
+                    return System.Runtime.InteropServices.Marshal.PtrToStringUni(valuePtr);
+                }
+                finally
+                {
+                    System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+                }
+            };
+
+            var pass = SecureToString(securePassword);
+            return pass;
 
         }
 
