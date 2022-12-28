@@ -68,16 +68,10 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             
             if (returnUrl == null) 
                 returnUrl = "/WebGoatCoins/MainPage.aspx";
-                if(IsValidUrl(returnUrl))
-                {
-                        Response.Redirect(returnUrl);        
-                }
-                else
-                {
-                    Response.Redirect("/WebGoatCoins/MainPage.aspx");
-                }
+                string sanitizedUrl = SanitizeUrlRedirect(returnUrl);
+                Response.Redirect(sanitizedUrl);        
         }
-        private static bool IsValidUrl(string url)
+        private static string SanitizeUrlRedirect(string url)
         {
             const string VALID_URL1="/WebGoatCoins/CustomerSettings.aspx";
             const string VALID_URL2="/WebGoatCoins/Catalog.aspx";
@@ -87,15 +81,15 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             switch(url)
             {
                 case VALID_URL1:
-                return true;
+                return VALID_URL1;
                 case VALID_URL2:
-                return true;
+                return VALID_URL2;
                 case VALID_URL3:
-                return true;
+                return VALID_URL3;
                 case VALID_URL4:
-                return true;
+                return VALID_URL4;
             }
-            return false;
+            return "/WebGoatCoins/MainPage.aspx";
         }
     }
 }
