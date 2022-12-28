@@ -111,9 +111,9 @@ namespace OWASP.WebGoat.NET.App_Code.DB
             return Math.Abs(retVal1) + Math.Abs(retVal2) == 0;
         }
 
-           public bool IsValidCustomerLogin(string email, SecureString password)
+           public bool IsValidCustomerLogin(string email, SecureString securePwd)
         {
-            string pwd = ConvertToString(password);
+            string pwd = ConvertToString(securePwd);
             //encode password
             string encoded_password = Encoder.Encode(pwd);
          

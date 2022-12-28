@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Data.SqlClient;
 using System.Security;
+using System.Text;
+using System.Collections.Generic;
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
     public class SqliteDbProvider : IDbProvider
@@ -77,9 +79,9 @@ namespace OWASP.WebGoat.NET.App_Code.DB
             }
         }
 
-        public bool IsValidCustomerLogin(string email, SecureString password)
+        public bool IsValidCustomerLogin(string email, SecureString securePwd)
         {
-            string pwd = ConvertToString(password);
+            string pwd = ConvertToString(securePwd);
             //encode password
             string encoded_password = Encoder.Encode(pwd);
             
@@ -114,8 +116,8 @@ namespace OWASP.WebGoat.NET.App_Code.DB
 
         private static string ConvertToString(SecureString securePassword)
         {
-            string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;;
-            return password;
+            string pwdStr = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
+            return pwdStr;
 
         }
 
