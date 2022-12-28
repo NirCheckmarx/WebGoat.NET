@@ -9,6 +9,7 @@ using OWASP.WebGoat.NET.App_Code.DB;
 using OWASP.WebGoat.NET.App_Code;
 using log4net;
 using System.Reflection;
+using System.Security;
 
 namespace OWASP.WebGoat.NET.WebGoatCoins
 {
@@ -30,17 +31,19 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
 
         protected void ButtonLogOn_Click(object sender, EventArgs e)
         {
-            string email = txtUserName.Text;
-            string pwd = txtPassword.Text;
+            string email = HttpUtility.HtmlEncode(txtUserName.Text);
+            SecureString pwd = ConvertToSecureString(HttpUtility.HtmlEncode(txtPassword.Text));
 
-            log.Info("User " + email + " attempted to log in with password " + pwd);
+            log.Info("User " + email + " attempted to log in with password XXXXX");
 
             if (!du.IsValidCustomerLogin(email, pwd))
             {
                 labelError.Text = "Incorrect username/password"; 
                 PanelError.Visible = true;
+                pwd.Dispose;
                 return;
             }
+            pwd.Dispose;
             // put ticket into the cookie
             FormsAuthenticationTicket ticket =
                         new FormsAuthenticationTicket(
@@ -90,6 +93,21 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
                 return VALID_URL4;
             }
             return "/WebGoatCoins/MainPage.aspx";
+        }
+        private static SecureString ConvertToSecureString(string password)
+        {
+            if (password == null)
+            throw new ArgumentNullException("password");
+
+            unsafe
+            {
+                fixed (char* passwordChars = password)
+                {
+                    var securePassword = new SecureString(passwordChars, password.Length);
+                    securePassword.MakeReadOnly();
+                    return securePassword;
+                }
+            }
         }
     }
 }

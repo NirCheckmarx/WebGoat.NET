@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using System.Data.SqlClient;
+using System.Security;
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
     public class SqliteDbProvider : IDbProvider
@@ -76,10 +77,11 @@ namespace OWASP.WebGoat.NET.App_Code.DB
             }
         }
 
-        public bool IsValidCustomerLogin(string email, string password)
+        public bool IsValidCustomerLogin(string email, SecureString password)
         {
+            string pwd = ConvertToString(password);
             //encode password
-            string encoded_password = Encoder.Encode(password);
+            string encoded_password = Encoder.Encode(pwd);
             
             //check email/password
             string sql = "select * from CustomerLogin where email = '" + email + "' and password = '" + 
@@ -108,6 +110,13 @@ namespace OWASP.WebGoat.NET.App_Code.DB
                     throw new Exception("Error checking login", ex);
                 }
             }
+        }
+
+        private static string ConvertToString(SecureString password)
+        {
+            string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;;
+            return password;
+
         }
 
         public bool RecreateGoatDb()
