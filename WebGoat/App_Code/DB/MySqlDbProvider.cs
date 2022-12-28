@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Security;
+
 
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
