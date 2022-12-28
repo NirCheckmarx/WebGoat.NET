@@ -40,10 +40,8 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             {
                 labelError.Text = "Incorrect username/password"; 
                 PanelError.Visible = true;
-                pwd.Dispose;
                 return;
             }
-            pwd.Dispose;
             // put ticket into the cookie
             FormsAuthenticationTicket ticket =
                         new FormsAuthenticationTicket(
