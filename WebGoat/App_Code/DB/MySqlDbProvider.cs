@@ -588,7 +588,7 @@ namespace OWASP.WebGoat.NET.App_Code.DB
                     return ds;
             }
         }
-        private static string ConvertToString(SecureString password)
+        private static string ConvertToString(SecureString securePassword)
         {
             string password = new System.Net.NetworkCredential(string.Empty, securePassword).Password;;
             return password;
