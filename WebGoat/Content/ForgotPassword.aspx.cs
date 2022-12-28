@@ -63,7 +63,9 @@ namespace OWASP.WebGoat.NET
                     PanelForgotPasswordStep1.Visible = false;
                     PanelForgotPasswordStep2.Visible = false;
                     PanelForgotPasswordStep3.Visible = true;
-                    labelPassword.Text = "Security Question Challenge Successfully Completed! <br/>Your password is: " + getPassword(txtEmail.Text);
+                    labelPassword.Text = "Security Question Challenge Successfully Completed! <br/>Check your email for a password reset link <br/>";
+                    SendPasswordResetEmail(txtEmail.Text);
+
                 }
             }
             catch (Exception ex)
@@ -76,6 +78,10 @@ namespace OWASP.WebGoat.NET
         {
             string password = du.GetPasswordByEmail(email);
             return password;
+        }
+                protected void SendPasswordResetEmail(string email)
+        {
+            //send the email to the user
         }
 
     }
