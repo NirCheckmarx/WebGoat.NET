@@ -7,7 +7,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Security;
-
+using System.Text;
+using System.Collections.Generic;
 
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
