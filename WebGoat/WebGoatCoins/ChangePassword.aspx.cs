@@ -30,7 +30,15 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
                 }
 
                 string output = du.UpdateCustomerPassword(int.Parse(customerNumber), txtPassword1.Text);
-                labelMessage.Text = output;
+                if(output!=null)
+                {
+                    labelMessage.Text = "Error occured updating new Password! please contact Admin";
+                }
+                else
+                {
+                    labelMessage.Text = "Password successfully updated";
+                }
+                
             }
             else
             {
