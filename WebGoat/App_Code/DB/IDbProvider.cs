@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-
+using System.Security;
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
     public interface IDbProvider
@@ -11,7 +11,7 @@ namespace OWASP.WebGoat.NET.App_Code.DB
 
         DataSet GetCatalogData();
 
-        bool IsValidCustomerLogin(string email, string password);
+        bool IsValidCustomerLogin(string email, SecureString password);
 
         bool RecreateGoatDb();
 

@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-
+using System.Security;
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
     public class DummyDbProvider : IDbProvider
@@ -21,7 +21,7 @@ namespace OWASP.WebGoat.NET.App_Code.DB
             return null;
         }
 
-        public bool IsValidCustomerLogin(string email, string password)
+        public bool IsValidCustomerLogin(string email, SecureString password)
         {
             return false;
         }
