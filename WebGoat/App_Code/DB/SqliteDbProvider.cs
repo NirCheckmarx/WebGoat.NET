@@ -7,6 +7,11 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading;
 using System.Data.SqlClient;
+using System.Security;
+using System.Text;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace OWASP.WebGoat.NET.App_Code.DB
 {
     public class SqliteDbProvider : IDbProvider
@@ -76,10 +81,11 @@ namespace OWASP.WebGoat.NET.App_Code.DB
             }
         }
 
-        public bool IsValidCustomerLogin(string email, string password)
+        public bool IsValidCustomerLogin(string email, SecureString securePwd)
         {
+            string pwd = ConvertToString(securePwd);
             //encode password
-            string encoded_password = Encoder.Encode(password);
+            string encoded_password = Encoder.Encode(pwd);
             
             //check email/password
             string sql = "select * from CustomerLogin where email = '" + email + "' and password = '" + 
@@ -108,6 +114,29 @@ namespace OWASP.WebGoat.NET.App_Code.DB
                     throw new Exception("Error checking login", ex);
                 }
             }
+        }
+
+        private static string ConvertToString(SecureString securePassword)
+        {
+            //string pwdStr = new System.Net.NetworkCredential(string.Empty, securePassword).Password;
+            //return pwdStr;
+            Func<SecureString, string> SecureToString = secureString =>
+            {
+                IntPtr valuePtr = IntPtr.Zero;
+                try
+                {
+                    valuePtr = System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocUnicode(secureString);
+                    return System.Runtime.InteropServices.Marshal.PtrToStringUni(valuePtr);
+                }
+                finally
+                {
+                    System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
+                }
+            };
+
+            var pass = SecureToString(securePassword);
+            return pass;
+
         }
 
         public bool RecreateGoatDb()

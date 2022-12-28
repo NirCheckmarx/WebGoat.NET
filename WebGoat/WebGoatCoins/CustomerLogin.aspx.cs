@@ -9,6 +9,7 @@ using OWASP.WebGoat.NET.App_Code.DB;
 using OWASP.WebGoat.NET.App_Code;
 using log4net;
 using System.Reflection;
+using System.Security;
 
 namespace OWASP.WebGoat.NET.WebGoatCoins
 {
@@ -30,10 +31,10 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
 
         protected void ButtonLogOn_Click(object sender, EventArgs e)
         {
-            string email = txtUserName.Text;
-            string pwd = txtPassword.Text;
+            string email = HttpUtility.HtmlEncode(txtUserName.Text);
+            SecureString pwd = ConvertToSecureString(HttpUtility.HtmlEncode(txtPassword.Text));
 
-            log.Info("User " + email + " attempted to log in with password " + pwd);
+            log.Info("User " + email + " attempted to log in with password XXXXX");
 
             if (!du.IsValidCustomerLogin(email, pwd))
             {
@@ -57,6 +58,8 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
 
             // put ticket into the cookie
             HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted_ticket);
+            cookie.HttpOnly=true;
+            cookie.Secure=true;
 
             //set expiration date
             if (ticket.IsPersistent)
@@ -68,8 +71,43 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
             
             if (returnUrl == null) 
                 returnUrl = "/WebGoatCoins/MainPage.aspx";
-                
-            Response.Redirect(returnUrl);        
+                string sanitizedUrl = SanitizeUrlRedirect(returnUrl);
+                Response.Redirect(sanitizedUrl);        
+        }
+        private static string SanitizeUrlRedirect(string url)
+        {
+            const string VALID_URL1="/WebGoatCoins/CustomerSettings.aspx";
+            const string VALID_URL2="/WebGoatCoins/Catalog.aspx";
+            const string VALID_URL3="/WebGoatCoins/ChangePassword.aspx";
+            const string VALID_URL4="/WebGoatCoins/ForgotPassword.aspx";
+            
+            switch(url)
+            {
+                case VALID_URL1:
+                return VALID_URL1;
+                case VALID_URL2:
+                return VALID_URL2;
+                case VALID_URL3:
+                return VALID_URL3;
+                case VALID_URL4:
+                return VALID_URL4;
+            }
+            return "/WebGoatCoins/MainPage.aspx";
+        }
+        private static SecureString ConvertToSecureString(string password)
+        {
+            if (password == null)
+            throw new ArgumentNullException("password");
+
+            unsafe
+            {
+                fixed (char* passwordChars = password)
+                {
+                    var securePassword = new SecureString(passwordChars, password.Length);
+                    securePassword.MakeReadOnly();
+                    return securePassword;
+                }
+            }
         }
     }
 }
