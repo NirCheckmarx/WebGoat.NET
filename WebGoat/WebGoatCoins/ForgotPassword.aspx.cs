@@ -64,7 +64,7 @@ namespace OWASP.WebGoat.NET.WebGoatCoins
                     PanelForgotPasswordStep1.Visible = false;
                     PanelForgotPasswordStep2.Visible = false;
                     PanelForgotPasswordStep3.Visible = true;
-                    labelPassword.Text = "Security Question Challenge Successfully Completed! <br/>Check your email for a password reset link";
+                    labelPassword.Text = "Security Question Challenge Successfully Completed! <br/>Check your email for a password reset link <br/>";
                     SendPasswordResetEmail(txtEmail.Text);
                 }
             }
